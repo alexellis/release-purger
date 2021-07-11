@@ -1,10 +1,12 @@
 ## release-purger
 
-A tool to remove the binary releases from projects which are taken for granted.
+A tool to remove the binary releases from a project.
 
-What's the problem being solved? Despite sponsorships or a paid version being made available, there's over 157k recent downloads of [inlets OSS](https://github.com/inlets/inlets), and over 8.3k GitHub Stars.
+Why is this needed? Perhaps the older versions contain a serious bug, or maybe there is some other reason why those assets need to be removed.
 
-[How many sponsors are there?](https://github.com/sponsors/inlets) (today it's 1, at 25 USD / mo) by the time you are reading this, it may be zero.
+## Disclaimer
 
-What's the solution? By removing the binary releases, the open source version becomes less useful vs. the commercial option, which is priced at the cost of a mid-level GitHub Sponsorship.
+Use at your own risk. No warranty provided.
+
+See also: [LICENSE](LICEENSE)
 
