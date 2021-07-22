@@ -14,16 +14,19 @@ import (
 
 func main() {
 	var (
-		owner     string
-		repo      string
-		tokenFile string
-		purge     bool
+		owner          string
+		repo           string
+		tokenFile      string
+		purgeArtifacts bool
+		purgeReleases  bool
 	)
 
 	flag.StringVar(&owner, "owner", "inlets", "username or org on GitHub")
-	flag.StringVar(&repo, "repo", "inlets", "repo on GitHub")
+	flag.StringVar(&repo, "repo", "inlets-archived", "repo on GitHub")
 	flag.StringVar(&tokenFile, "token-file", "./token", "path to personal access token saved as a file")
-	flag.BoolVar(&purge, "purge", false, "purge all release artifacts")
+	flag.BoolVar(&purgeArtifacts, "purge-artifacts", false, "purge all release artifacts")
+	flag.BoolVar(&purgeReleases, "purge-releases", false, "purge the release itself")
+
 	flag.Parse()
 
 	t, err := os.ReadFile(tokenFile)
@@ -63,13 +66,21 @@ func main() {
 				asset.BrowserDownloadURL, asset.GetContentType(),
 				asset.GetDownloadCount(), asset.Label)
 
-			if purge {
+			if purgeArtifacts {
 				_, err := client.Repositories.DeleteReleaseAsset(context.Background(), owner, repo, asset.GetID())
 				if err != nil {
 					panic(err)
 				}
-				fmt.Printf("%d\t%s deleted\n", asset.GetID(), asset.GetName())
+				fmt.Printf("Artifact: %d\t%s deleted\n", asset.GetID(), asset.GetName())
 			}
+		}
+
+		if purgeReleases {
+			_, err := client.Repositories.DeleteRelease(context.Background(), owner, repo, release.GetID())
+			if err != nil {
+				panic(err)
+			}
+			fmt.Printf("Release: %d\t%s deleted\n", release.GetID(), release.GetName())
 		}
 	}
 }
